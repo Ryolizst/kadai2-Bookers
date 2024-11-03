@@ -1,0 +1,61 @@
+<div class="flash-notice">
+  <%= flash[:notice] %>
+</div>
+
+<h1>Books</h1>
+
+<div class="flash-alert">
+  <p><%= flash[:alert] %></p>
+</div>
+
+<!-- エラーメッセージの表示 -->
+<% if @book.errors.any? %>
+  <div class="error-messages">
+    <p><%= @book.errors.count %> errors found:</p>
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<!-- 投稿一覧をtableタグで表示 -->
+<table class="book-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.title %></td>
+        <td><%= book.body %></td>
+        <td>
+          <%= link_to 'Show', book_path(book), class: "action-link" %> |
+          <%= link_to 'Edit', edit_book_path(book), class: "action-link" %> |
+          <%= link_to 'Destroy', book_path(book), method: :delete, data: { confirm: 'Are you sure?' }, class: "action-link" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- 新規投稿フォーム -->
+<h2>New Book</h2>
+<%= form_with model: @book, url: books_path do |f| %>
+  <div class="form-group">
+    <%= f.label :title, "Title" %> <br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="form-group">
+    <%= f.label :body, "Body" %> <br>
+    <%= f.text_area :body %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Create Book" %>
+  </div>
+<% end %>
